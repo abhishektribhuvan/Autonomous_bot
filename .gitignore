@@ -1,0 +1,19 @@
+# Arduino / ESP32 Ignore File
+
+# Arduino Build/Cache
+build/
+*.elf
+*.bin
+*.hex
+*.part
+.pio/
+.vscode/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

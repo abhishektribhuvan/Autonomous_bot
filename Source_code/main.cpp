@@ -14,8 +14,6 @@ const int RIGHT_MOTOR_IN3_PIN = 18;
 const int RIGHT_MOTOR_IN4_PIN = 19;
 const int RFID_SS_PIN = 21;
 const int RFID_RST_PIN = 22;
-const int PWM_FREQUENCY = 1000;
-const int PWM_RESOLUTION = 8;
 const int BLUETOOTH_BAUDRATE = 115200;
 const char* BLUETOOTH_DEVICE_NAME = "PID_TUNING";
 
@@ -41,6 +39,7 @@ enum RobotState {
   GOING_TO_TABLE1,
   CORRECTING_LEFT_TABLE1_CORNER, 
   CORRECTING_RIGHT_TABLE1_CORNER, 
+  TURNING_RIGHT_TABLE1,
   GOING_TO_TABLE1_DELIVERY,
   TURNING_LEFT_180_TABLE1_DELIVERY, 
   AT_TABLE1_DELIVERY,
@@ -66,6 +65,19 @@ const unsigned long TURN_180_DELAY = 2000;
 int leftTurns = 0;
 int rightTurns = 0;
 
+// Function Prototypes
+void tuning();
+void processRobotState();
+String getUID();
+void followline();
+void turnRight(int speed = -1);
+void turnLeft(int speed = -1);
+void MLeft(int speed);
+void MRight(int speed);
+void stop();
+void startNonBlockingDelay(unsigned long duration);
+bool isNonBlockingDelayFinished();
+
 void setup() {
   Serial.begin(BLUETOOTH_BAUDRATE);
   SerialBT.begin(BLUETOOTH_DEVICE_NAME);
@@ -77,11 +89,8 @@ void setup() {
   pinMode(LEFT_MOTOR_IN2_PIN, OUTPUT);
   pinMode(RIGHT_MOTOR_IN3_PIN, OUTPUT);
   pinMode(RIGHT_MOTOR_IN4_PIN, OUTPUT);
-
-  ledcSetup(0, PWM_FREQUENCY, PWM_RESOLUTION); 
-  ledcSetup(1, PWM_FREQUENCY, PWM_RESOLUTION); 
-  ledcAttachPin(LEFT_PWM_PIN, 0);
-  ledcAttachPin(RIGHT_PWM_PIN, 1);
+  pinMode(LEFT_PWM_PIN, OUTPUT);
+  pinMode(RIGHT_PWM_PIN, OUTPUT);
 
   currentState = IDLE;
 }
@@ -349,13 +358,13 @@ void followline() {
   MRight(rightspeed);
 }
 
-void turnRight(int speed = -1) {
+void turnRight(int speed) {
   int actualSpeed = (speed == -1) ? motorbasespeed : speed;
   MLeft(actualSpeed);  // Forward on left
   MRight(0);             // Stop right
 }
 
-void turnLeft(int speed = -1) {
+void turnLeft(int speed) {
   int actualSpeed = (speed == -1) ? motorbasespeed : speed;
   MLeft(0);              // Stop left
   MRight(actualSpeed); // Forward on right
@@ -364,13 +373,13 @@ void turnLeft(int speed = -1) {
 void MLeft(int speed) {
   digitalWrite(LEFT_MOTOR_IN1_PIN, HIGH);
   digitalWrite(LEFT_MOTOR_IN2_PIN, LOW);
-  ledcWrite(0, constrain(speed, 0, maxmotorspeed));
+  analogWrite(LEFT_PWM_PIN, constrain(speed, 0, maxmotorspeed));
 }
 
 void MRight(int speed) {
   digitalWrite(RIGHT_MOTOR_IN3_PIN, HIGH);
   digitalWrite(RIGHT_MOTOR_IN4_PIN, LOW);
-  ledcWrite(1, constrain(speed, 0, maxmotorspeed));
+  analogWrite(RIGHT_PWM_PIN, constrain(speed, 0, maxmotorspeed));
 }
 
 
