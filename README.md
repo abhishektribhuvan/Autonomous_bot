@@ -13,11 +13,11 @@ This project was developed alongside a research paper detailing the design, impl
 
 *Note: Add your prototype photos, map photo, demo video, and research paper into the `assets` folder and link them below!*
 
-- **Prototype Photo:** `![Prototype](assets/prototype.jpg)`
-- **Prototype Photo:** `![Prototype](assets/prototype2.jpg)`
-- **Path/Map Photo:** `![Map](assets/map.jpg)`
-- **Demo Video:** `[Watch Demo Video](assets/demo_video.mp4)`
-- **Research Paper:** `[Read the Paper](assets/research_paper.pdf)`
+- **Prototype Photo:** ![Prototype](assets/prototype.jpg)
+- **Prototype Photo:** ![Prototype](assets/prototype2.jpg)
+- **Path/Map Photo:** ![Map](assets/map.jpg)
+- **Demo Video:** [Watch Demo Video](assets/demo_video.mp4)
+- **Research Paper:** [Read the Paper](assets/research_paper.pdf)
 
 ## ✨ Features
 - **PID Line Following:** Uses a 7-sensor IR array to calculate weighted error and smoothly follow a line using Proportional-Integral-Derivative control.
